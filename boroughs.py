@@ -22,13 +22,15 @@ def get_score_summary(filename):
         if row[1] not in output and bool(row[10]) and row[10] is not 'P':
             output.update({row[0]:[row[10],row[1]]})
     openfile.close()
-
+    boro_count = {}
     for grade_val in output.values():
         if grade_val[1] in final:
-            final[grade_val[1]] += 1
+            final[grade_val[1]] += grades[grade_val[0]]
+            boro_count[grade_val[1]] += 1
         elif grade_val[1] != 'BORO':
-            final.update({grade_val[1]: 1})
-    print final
+            final.update({grade_val[1]: 0})
+            boro_count.update({grade_val[1]:1})
+    print final, boro_count
 
 
 if __name__ == '__main__':
