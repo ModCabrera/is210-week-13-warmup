@@ -120,9 +120,9 @@ Task 02
 -------
 
 Next, we'll be performing a similar transformation with a JSON file. JSON is
-one of the most popular data formats available because of its compactness and
-portability. The Python ``json`` module will be helping us convert the JSON
-file.
+one of the most popular data formats available because of its compactness 
+and portability. The Python ``json`` module will be helping us convert the 
+JSON file.
 
 Specifications
 ^^^^^^^^^^^^^^
