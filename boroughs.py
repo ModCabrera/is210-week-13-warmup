@@ -1,4 +1,4 @@
-#!/usr/bzin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """Open and read a CSV file on local filesystem."""
 import csv
@@ -15,10 +15,21 @@ GRADE_SCORE = {
 
 
 def get_score_summary(filename):
-    """
+    """Open and Reads CSV File and returns summarized version of data.
     Args:
+        scorefile = Opens file in read form.
+        readscore = Reads CSV file and (demiliter = ',' )
+        grade_dict (dict) = Placeholder for file score data.
+
     Returns:
+        None
+
     Examples:
+        >>> get_score_summary('inspection_results.csv')
+        >>> {'BRONX': (156, 0.9762820512820514), 'BROOKLYN':
+        (417, 0.9745803357314141), 'STATEN ISLAND': (46, 0.9804347826086955),
+        'MANHATTAN': (748, 0.9771390374331531), 'QUEENS':
+        (414, 0.9719806763285017)}
     """
     scorefile = open(filename, 'r')
     readscore = csv.reader(scorefile, delimiter=',')
@@ -30,7 +41,7 @@ def get_score_summary(filename):
         camisid = row[0]
 
         if camisid not in grade_dict and grade in GRADE_SCORE:
-            grade_dict.update({camisid: [grade, boro]})
+            grade_dict[camisid] = [grade, boro]
     scorefile.close()
 
     rest_summary = {}
@@ -51,10 +62,19 @@ def get_score_summary(filename):
 
 
 def get_market_density(filename):
-    """
+    """Opens File using json and stores data in dict.
     Args:
+        marketfile = Opens file in read form.
+        market_read = Loads json file into attribute
+        market_data (dict) = Placeholder for Market density data.
+
     Returns:
+        market_data (dict) = Market density data.
+
     Examples:
+        >>> get_market_density('green_markets.json')
+        {u'STATEN ISLAND': 2, u'BROOKLYN': 48, u'BRONX': 32,
+        u'MANHATTAN': 39, u'QUEENS': 16}
     """
     marketfile = open(filename, 'r')
     market_read = json.load(marketfile)
@@ -71,10 +91,16 @@ def get_market_density(filename):
 
 
 def correlate_data(restaurants, markets, outputfile):
-    """
+    """Combines Data for Boroughs and returns a Dict AVG Score, markets/restaur.
     Args:
+        restaurants (dict) = Restaurant Score summary file.
+        markets (dict) = Market Density summary file.
+
     Returns:
+        None
+
     Examples:
+        {'BRONX': (0.9762820512820514, 0.1987179487179487)}
     """
     restaurants = get_score_summary(restaurants)
     markets = get_market_density(markets)
