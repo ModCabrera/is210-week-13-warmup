@@ -3,7 +3,7 @@
 """Open and read a CSV file on local filesystem."""
 import csv
 import json
-import yaml
+
 
 GRADE_SCORE = {
     'A': float(1),
@@ -57,7 +57,7 @@ def get_market_density(filename):
     Examples:
     """
     marketfile = open(filename, 'r')
-    market_read = yaml.safe_load(marketfile)
+    market_read = json.load(marketfile)
     market_data = {}
 
     for values in market_read['data']:
