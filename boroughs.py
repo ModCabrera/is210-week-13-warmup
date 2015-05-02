@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 """Open and read a CSV file on local filesystem."""
 import csv
+import json
+import yaml
 
-
-grade_score = {
+GRADE_SCORE = {
     'A': float(1),
     'B': float(.9),
     'C': float(.8),
@@ -14,44 +15,47 @@ grade_score = {
 
 
 def get_score_summary(filename):
+    """
+    Args:
+    Returns:
+    Examples:
+    """
     scorefile = open(filename, 'r')
-    readscore = csv.reader(scorefile, delimiter = ',')
-    grade_dict ={}
+    readscore = csv.reader(scorefile, delimiter=',')
+    grade_dict = {}
 
     for row in readscore:
         boro = row[1]
         grade = row[10]
         camisid = row[0]
 
-        if camisid not in grade_dict and grade in grade_score:
+        if camisid not in grade_dict and grade in GRADE_SCORE:
             grade_dict.update({camisid: [grade, boro]})
-
     scorefile.close()
-    
-    rest_summary = {}
 
+    rest_summary = {}
     for grade in grade_dict.values():
         grade_letter = grade[0]
         grade_boro = grade[1]
 
         if grade_boro in rest_summary:
-            rest_summary[grade_boro][1] += grade_score[grade_letter]
+            rest_summary[grade_boro][1] += GRADE_SCORE[grade_letter]
             rest_summary[grade_boro][0] += 1
         else:
-            rest_summary[grade_boro] = [1, grade_score[grade_letter]]
+            rest_summary[grade_boro] = [1, GRADE_SCORE[grade_letter]]
 
     final = {}
-
     for boro, grade in rest_summary.iteritems():
-        final[boro] = grade[0], grade[1]/float(grade[0])
+        final[boro] = grade[0], grade[1]/grade[0]
     return final
 
 
-import json
-import yaml
-
-
 def get_market_density(filename):
+    """
+    Args:
+    Returns:
+    Examples:
+    """
     marketfile = open(filename, 'r')
     market_read = yaml.safe_load(marketfile)
     market_data = {}
@@ -63,11 +67,15 @@ def get_market_density(filename):
             market_data[boro] += 1
         else:
             market_data[boro] = 1
-            
     return market_data
 
 
 def correlate_data(restaurants, markets, outputfile):
+    """
+    Args:
+    Returns:
+    Examples:
+    """
     restaurants = get_score_summary(restaurants)
     markets = get_market_density(markets)
     data_dict = {}
